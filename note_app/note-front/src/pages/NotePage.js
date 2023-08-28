@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as ArrowLeft } from '../assets/arrow-left.svg'
 
 export const NotePage = () => {
@@ -43,11 +43,11 @@ export const NotePage = () => {
   };
 
   const handleSubmit = () => {
-    if (noteId !== 'new' && !note.body) {
+    if (noteId !== 'new' && note.body === "") {
       deleteNote();
     } else if (noteId !== 'new'){
       updateNote();
-    } else if (noteId === 'new' && note !== null){
+    } else if (noteId === 'new' && note.body !== null){
       createNote();
     }
   } 
@@ -60,6 +60,13 @@ export const NotePage = () => {
       },
     })
   }
+
+
+    let handleChange = (value) => {
+      setNote((note) => ({ ...note, body: value }));
+      console.log("Handle Change:", note);
+    };
+  
 
   return (
     <div className="note">
@@ -79,9 +86,9 @@ export const NotePage = () => {
       </div>
       <textarea
         onChange={(e) => {
-          setNote({ ...note, body: e.target.value });
+          handleChange(e.target.value);
         }}
-        defaultValue={note?.body}
+        value={note?.body}
       ></textarea>
     </div>
   );
